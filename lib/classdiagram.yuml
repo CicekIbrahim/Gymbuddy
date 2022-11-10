@@ -1,0 +1,8 @@
+// {type:class}
+// {direction:rightToLeft}
+// {generate:true}
+
+[Üye|Id;Cinsiyet;UyelikBitisTarihi]*-1>[GymBuddy|giris_yap();cikis_yap()]
+[GymBuddy|promo_price()]<1-*[Spor Salonu|KayitliUye;AktifUye;Sicaklik;Nem]
+[Spor Salonu]<1-1[IOT|GetNem();GetSicaklik();GetAktifUye]
+
