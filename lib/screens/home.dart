@@ -1,41 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gymbuddy/profile.dart';
+import '../controllers/controller.dart';
+import '../controllers/landingPageController.dart';
 
-import 'controller.dart';
-
-class Home extends StatelessWidget {
+class HomePage extends StatelessWidget {
   final controller = Get.put(Controller());
+  final landingcontroller = Get.put(LandingPageController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
+        extendBody: true,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
-              child: GestureDetector(
-                child: Row(children: const [
-                  Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    'Salon Seç',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ]),
-                onTap: () {
-                  controller.increment();
-                },
-              ),
-            ),
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 8, 85, 8),
+                  padding: const EdgeInsets.fromLTRB(25, 50, 85, 8),
                   child: Text(
                     "Merhaba \n${controller.userName}",
                     style: TextStyle(
@@ -43,17 +27,17 @@ class Home extends StatelessWidget {
                         color: Colors.white),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(Profile());
-                  },
-                  child: SizedBox(
-                    height: Get.height / 12,
-                    child: ClipOval(
-                      child: Image.network(controller.ppUrl.string),
-                    ),
-                  ),
-                )
+                Obx(() => GestureDetector(
+                      onTap: () {
+                        landingcontroller.tabIndex.value = 1;
+                      },
+                      child: SizedBox(
+                        height: Get.height / 12,
+                        child: ClipOval(
+                          child: Image.network(controller.ppUrl.string),
+                        ),
+                      ),
+                    ))
               ],
             ),
             Padding(
@@ -80,13 +64,14 @@ class Home extends StatelessWidget {
                         'Doluluk Oranı',
                         style: TextStyle(
                             fontSize: (Get.height * Get.width) / 10500,
-                            color: Colors.white),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 4, 0, 5),
                       child: Obx(() => Text(
-                            '%${((controller.inside.value * 100) / controller.total.value).toStringAsFixed(1)}',
+                            '%${((controller.inside.value * 100) / controller.totalp.value).toStringAsFixed(1)}',
                             style: TextStyle(
                                 fontSize: (Get.height * Get.width) / 15000,
                                 color: Colors.white),
@@ -99,7 +84,7 @@ class Home extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                             child: Obx(() => LinearProgressIndicator(
                                   value: (controller.inside.value /
-                                          controller.total.value)
+                                          controller.totalp.value)
                                       .toDouble(),
                                   color: Colors.amber,
                                   backgroundColor: Colors.grey,
@@ -143,14 +128,15 @@ class Home extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.thermostat_rounded,
-                                color: Colors.white,
+                                color: Colors.amber,
                                 size: (Get.height * Get.width) / 8000,
                               ),
                               Text(
                                 'Sıcaklık',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: (Get.height * Get.width) / 13000),
+                                    fontSize: (Get.height * Get.width) / 13000,
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
@@ -160,6 +146,7 @@ class Home extends StatelessWidget {
                               child: Obx(() => Text(
                                     '${controller.degree.value}°C',
                                     style: TextStyle(
+                                        fontWeight: FontWeight.w400,
                                         fontSize:
                                             (Get.height * Get.width) / 7500,
                                         color: Colors.white),
@@ -182,14 +169,15 @@ class Home extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.waves,
-                                color: Colors.white,
+                                color: Colors.amber,
                                 size: (Get.height * Get.width) / 8000,
                               ),
                               Text(
                                 'Nem Oranı',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: (Get.height * Get.width) / 14000),
+                                    fontSize: (Get.height * Get.width) / 14000,
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
@@ -199,8 +187,10 @@ class Home extends StatelessWidget {
                               child: Text(
                                 '%${controller.humid.value}',
                                 style: TextStyle(
-                                    fontSize: (Get.height * Get.width) / 7500,
-                                    color: Colors.white),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: (Get.height * Get.width) / 7500,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -212,15 +202,74 @@ class Home extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.grey[850]),
                     padding: const EdgeInsets.all(8),
-                    child: const Text('Sound of screams but the'),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Spacer(),
+                          Center(
+                            child: Text(
+                              'Kalan Üyelik\nSüresi',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: (Get.height * Get.width) / 14000,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Obx(() => Text(
+                                    '${controller.days.value} Gün',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize:
+                                            (Get.height * Get.width) / 8500,
+                                        color: Colors.white),
+                                  )),
+                            ),
+                          ),
+                          const Spacer(),
+                        ]),
                   ),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey[850],
+                      color: const Color(0xff7c94b6),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                          image: const AssetImage("lib/Image/male.png")),
                     ),
                     padding: const EdgeInsets.all(8),
-                    child: const Text('Who scream'),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Spacer(),
+                          Center(
+                            child: Text(
+                              'Soyunma Odası Doluluğu',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: (Get.height * Get.width) / 14000,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              child: Obx(() => Text(
+                                    '%${((controller.inside.value * 100) / controller.totalp.value).toStringAsFixed(1)}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize:
+                                            (Get.height * Get.width) / 8500,
+                                        color: Colors.white),
+                                  )),
+                            ),
+                          ),
+                          const Spacer(),
+                        ]),
                   ),
                 ],
               ),

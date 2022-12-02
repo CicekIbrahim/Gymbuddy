@@ -1,0 +1,63 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gymbuddy/controllers/controller.dart';
+
+import '../controllers/landingPageController.dart';
+
+class OpeningPage extends StatelessWidget {
+  final controller = Get.put(Controller());
+
+  final landingcontroller = Get.put(LandingPageController());
+
+  final _firestore = FirebaseFirestore.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference gymsRef = _firestore.collection('Gyms');
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          children: [
+            StreamBuilder<QuerySnapshot>(
+                stream: gymsRef.snapshots(),
+                builder: (BuildContext context, AsyncSnapshot asyncSnapshot) {
+                  if (asyncSnapshot.data != null) {
+                    List<DocumentSnapshot> listofDocumentSnapshot =
+                        asyncSnapshot.data.docs;
+
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Get.offAndToNamed('/login');
+                          },
+                          child: SizedBox(
+                            width: Get.width / 1.5,
+                            height: Get.height / 11,
+                            child: Card(
+                                clipBehavior: Clip.hardEdge,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(80),
+                                ),
+                                child: Image.network(
+                                    listofDocumentSnapshot[index]['gymUrl']
+                                        .toString())),
+                          ),
+                        );
+                      },
+                      itemCount: listofDocumentSnapshot.length,
+                    );
+                  } else {
+                    return const Text('Bir Hata Oluştu');
+                  }
+                })
+          ],
+        ),
+      ),
+    );
+  }
+}
