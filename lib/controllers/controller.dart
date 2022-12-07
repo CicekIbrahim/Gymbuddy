@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller extends GetxController {
   final _firestore = FirebaseFirestore.instance;
 
   late CollectionReference gymsRef = _firestore.collection('Gyms');
 
-  late var fitStop = gymsRef.where('GymName==Fitstop');
+  late var fitStop = gymsRef.doc(getGymUid().toString());
 
   var inside = 15.obs;
   var degree = 22.obs;
@@ -24,4 +25,15 @@ class Controller extends GetxController {
   increment() {
     inside++;
   }
+}
+
+Future<String> getGymUid() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? gymuid = prefs.getString('gymuid');
+  return gymuid.toString();
+}
+Future<String> getMemberUid() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? uid = prefs.getString('uid');
+  return uid.toString();
 }

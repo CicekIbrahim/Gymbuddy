@@ -76,7 +76,10 @@ class LoginPage extends GetWidget<AuthController> {
                           heroTag: "btn1",
                           backgroundColor: Colors.amber,
                           onPressed: () {
-                            Get.offAndToNamed('/landing');
+                            
+                            controller.login(
+                                emailController.text, passwordController.text);
+                            
                           },
                           label: const Text('Giriş Yap'))),
                 ],

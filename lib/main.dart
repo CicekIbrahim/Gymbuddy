@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:gymbuddy/screens/bindings/loginbinding.dart';
 import 'package:gymbuddy/screens/home.dart';
 import 'package:gymbuddy/screens/login.dart';
 import 'package:gymbuddy/screens/opening.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/landing', page: () => LandingPage()),
         GetPage(name: '/home', page: () => HomePage()),
-        GetPage(name: '/login', page: () => LoginPage()),
+        GetPage(name: '/login', page: () => LoginPage(),binding: LoginBinding()),
         GetPage(name: '/opening', page: () => OpeningPage()),
         GetPage(
             name: '/profile',

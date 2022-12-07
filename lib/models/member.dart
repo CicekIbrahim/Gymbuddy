@@ -13,14 +13,16 @@ class MemberModel {
 
   MemberModel({this.memberID, this.memberName, this.memberSurname, this.memberActive, this.memberDays, this.memberGender, this.memberEmail, this.memberUrl});
 
-  MemberModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
-    memberID = documentSnapshot["memberID"];
-    memberName = documentSnapshot["memberName"];
-    memberSurname = documentSnapshot["memberSurname"];
-    memberActive = documentSnapshot["memberActive"];
-    memberDays = documentSnapshot["memberDays"];
-    memberGender = documentSnapshot["memberGender"];
-    memberEmail = documentSnapshot["memberEmail"];
-    memberUrl = documentSnapshot["memberUrl"];
+  factory MemberModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
+    return MemberModel(memberID: documentSnapshot["memberID"],
+    memberName:   documentSnapshot["memberName"],
+    memberSurname: documentSnapshot["memberSurname"],
+    memberActive: documentSnapshot["memberActive"],
+    memberDays: documentSnapshot["memberDays"],
+    memberGender: documentSnapshot["memberGender"],
+    memberEmail: documentSnapshot["memberEmail"],
+    memberUrl: documentSnapshot["memberUrl"],
+    );
+    
   }
 }
