@@ -1,12 +1,21 @@
+import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:gymbuddy/controllers/memberController.dart';
+import 'package:gymbuddy/models/gym.dart';
+import 'package:gymbuddy/services/database.dart';
 import '../controllers/controller.dart';
 import '../controllers/landingPageController.dart';
 
 class HomePage extends StatelessWidget {
   final controller = Get.put(Controller());
+  final _firestore = FirebaseFirestore.instance;
   final landingcontroller = Get.put(LandingPageController());
-
+  String memberuid = Controller().getMemberUid().toString();
+  final prefs = GetStorage();
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,30 +29,62 @@ class HomePage extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(25, 50, 85, 8),
-                  child: Text(
-                    "Merhaba \n${controller.userName}",
-                    style: TextStyle(
-                        fontSize: (Get.height * Get.width) / 7000,
-                        color: Colors.white),
+                  child: GetX<MemberController>(
+                    init: MemberController(),
+                    initState: (_) async {
+                      Get.find<MemberController>().member =
+                          await Database().getmember();
+                    },
+                    builder: (_) {
+                      return Text(
+                        "Merhaba \n${_.member.memberName}",
+                        style: TextStyle(
+                            fontSize: (Get.height * Get.width) / 7000,
+                            color: Colors.white),
+                      );
+                    },
                   ),
                 ),
-                Obx(() => GestureDetector(
-                      onTap: () {
-                        landingcontroller.tabIndex.value = 1;
-                      },
-                      child: SizedBox(
-                        height: Get.height / 12,
-                        child: ClipOval(
-                          child: Image.network(controller.ppUrl.string),
-                        ),
-                      ),
+                GestureDetector(
+                    onTap: () {
+                      landingcontroller.tabIndex.value = 1;
+                    },
+                    child: SizedBox(
+                      height: Get.height / 12,
+                      width: Get.width / 6,
+                      child: ClipOval(
+                          child: StreamBuilder<DocumentSnapshot>(
+                              stream: _firestore
+                                  .collection('Gyms')
+                                  .doc(prefs.read('gymuid').toString())
+                                  .collection('Members')
+                                  .doc(prefs.read('memberuid').toString())
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  var member = snapshot.data!;
+                                  return SizedBox(
+                                    height: Get.height / 12,
+                                    child: ClipOval(
+                                        child:
+                                            Image.network(member['memberUrl'])),
+                                  );
+                                } else {
+                                  return SizedBox(
+                                    height: Get.height / 12,
+                                    child: ClipOval(
+                                        child: Image.network(
+                                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png")),
+                                  );
+                                }
+                              })),
                     ))
               ],
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(25, 8, 0, 8),
               child: Text(
-                "Şuanda ",
+                "Şu anda ",
                 style: TextStyle(
                     fontSize: (Get.height * Get.width) / 9000,
                     color: Colors.white),

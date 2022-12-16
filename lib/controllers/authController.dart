@@ -18,8 +18,9 @@ class AuthController extends GetxController {
       UserCredential _authResult = await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
       Get.put(MemberController());
+      await Database().saveMember(_authResult.user?.uid);
       Get.find<MemberController>().member =
-          await Database().getmember(_authResult.user?.uid);
+          await Database().getmember();
       Get.offAndToNamed('/landing');
     } catch (e) {
       Get.snackbar(

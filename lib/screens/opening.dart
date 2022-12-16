@@ -1,18 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gymbuddy/controllers/controller.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/landingPageController.dart';
 
 class OpeningPage extends StatelessWidget {
   final controller = Get.put(Controller());
 
-  _getuid(index, List<DocumentSnapshot> listofDocumentSnapshot) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'gymuid', listofDocumentSnapshot[index]['gymID'].toString());
+  _getuid(index, List<DocumentSnapshot> listofDocumentSnapshot) {
+    final prefs = GetStorage();
+    prefs.write('gymuid', listofDocumentSnapshot[index]['gymID'].toString());
   }
 
   final landingcontroller = Get.put(LandingPageController());
@@ -21,7 +20,6 @@ class OpeningPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     CollectionReference gymsRef = _firestore.collection('Gyms');
     return Scaffold(
       backgroundColor: Colors.black,

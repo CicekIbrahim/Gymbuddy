@@ -1,0 +1,6 @@
+// {type:activity}
+// {direction:leftToRight}
+// {generate:true}
+
+(start)->(Salon Seç)->(Giriş Yap)->|b|->(Üyelik SÜresi Görüntüle)->|c|,|b|->(Yoğunluk Görüntüle)->|c|
+
