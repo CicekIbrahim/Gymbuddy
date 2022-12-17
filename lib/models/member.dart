@@ -33,31 +33,4 @@ class MemberModel {
       memberUrl: documentSnapshot['memberUrl'],
     );
   }
-
-  factory MemberModel.fromQueryDocumentSnapshot(
-      {required QueryDocumentSnapshot querydocumentSnapshot}) {
-    return MemberModel(
-      memberID: querydocumentSnapshot['memberID'],
-      memberName: querydocumentSnapshot['memberName'],
-      memberSurname: querydocumentSnapshot['memberSurname'],
-      memberActive: querydocumentSnapshot['memberActive'],
-      memberDays: querydocumentSnapshot['memberDays'],
-      memberGender: querydocumentSnapshot['memberGender'],
-      memberEmail: querydocumentSnapshot['memberEmail'],
-      memberUrl: querydocumentSnapshot['memberUrl'],
-    );
-  }
-
-  factory MemberModel.fromMap(Map<String, dynamic> jsonMap) {
-    return MemberModel(
-      memberID: jsonMap['memberID'],
-      memberName: jsonMap['memberName'],
-      memberSurname: jsonMap['memberSurname'],
-      memberDays: jsonMap['memberDays'],
-      memberEmail: jsonMap['memberEmail'],
-      memberGender: jsonMap['memberGender'],
-      memberUrl: jsonMap['memberUrl'],
-      memberActive: jsonMap['memberActive'],
-    );
-  }
 }

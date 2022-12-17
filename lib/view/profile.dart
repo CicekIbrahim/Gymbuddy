@@ -32,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                       .doc(Controller().getMemberUid())
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
+                    if (snapshot.data!['memberUrl'] != "") {
                       var member = snapshot.data!;
                       return SizedBox(
                         height: Get.height / 7,

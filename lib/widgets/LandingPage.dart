@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gymbuddy/screens/login.dart';
+import 'package:gymbuddy/view/login.dart';
 
 import '../controllers/landingPageController.dart';
-import '../screens/home.dart';
-import '../screens/profile.dart';
+import '../view/home.dart';
+import '../view/profile.dart';
 
 class LandingPage extends StatelessWidget {
   final TextStyle unselectedLabelStyle = TextStyle(

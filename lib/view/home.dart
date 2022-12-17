@@ -1,10 +1,8 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gymbuddy/controllers/memberController.dart';
-import 'package:gymbuddy/models/gym.dart';
 import 'package:gymbuddy/services/database.dart';
 import '../controllers/controller.dart';
 import '../controllers/landingPageController.dart';
@@ -15,7 +13,7 @@ class HomePage extends StatelessWidget {
   final landingcontroller = Get.put(LandingPageController());
   String memberuid = Controller().getMemberUid().toString();
   final prefs = GetStorage();
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +59,7 @@ class HomePage extends StatelessWidget {
                                   .doc(prefs.read('memberuid').toString())
                                   .snapshots(),
                               builder: (context, snapshot) {
-                                if (snapshot.hasData) {
+                                if (snapshot.data!['memberUrl'] != "") {
                                   var member = snapshot.data!;
                                   return SizedBox(
                                     height: Get.height / 12,
@@ -111,37 +109,86 @@ class HomePage extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 4, 0, 5),
-                      child: Obx(() => Text(
-                            '%${((controller.inside.value * 100) / controller.totalp.value).toStringAsFixed(1)}',
-                            style: TextStyle(
-                                fontSize: (Get.height * Get.width) / 15000,
-                                color: Colors.white),
-                          )),
+                      child: StreamBuilder<DocumentSnapshot>(
+                          stream: _firestore
+                              .collection('Gyms')
+                              .doc(prefs.read('gymuid').toString())
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              var gym = snapshot.data!;
+                              return Text(
+                                '%${((gym['gymInside'] * 100) / gym['gymCapacity']).toStringAsFixed(1)}',
+                                style: TextStyle(
+                                    fontSize: (Get.height * Get.width) / 15000,
+                                    color: Colors.white),
+                              );
+                            } else {
+                              return Text("Hata",
+                                  style: TextStyle(
+                                      fontSize:
+                                          (Get.height * Get.width) / 15000,
+                                      color: Colors.white));
+                            }
+                          }),
                     ),
                     Row(
                       children: [
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Obx(() => LinearProgressIndicator(
-                                  value: (controller.inside.value /
-                                          controller.totalp.value)
-                                      .toDouble(),
-                                  color: Colors.amber,
-                                  backgroundColor: Colors.grey,
-                                )),
+                            child: StreamBuilder<DocumentSnapshot>(
+                                stream: _firestore
+                                    .collection('Gyms')
+                                    .doc(prefs.read('gymuid').toString())
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    var gym = snapshot.data!;
+                                    return LinearProgressIndicator(
+                                      value: (gym['gymInside'] /
+                                              gym['gymCapacity'])
+                                          .toDouble(),
+                                      color: Colors.amber,
+                                      backgroundColor: Colors.grey,
+                                    );
+                                  } else {
+                                    return LinearProgressIndicator(
+                                      value: (0 / 1).toDouble(),
+                                      color: Colors.amber,
+                                      backgroundColor: Colors.grey,
+                                    );
+                                  }
+                                }),
                           ),
                         ),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(12, 5, 0, 8),
-                      child: Obx(() => Text(
-                            '${controller.inside.value} Kişi',
-                            style: TextStyle(
-                                fontSize: (Get.height * Get.width) / 15000,
-                                color: Colors.white),
-                          )),
+                      child: StreamBuilder<DocumentSnapshot>(
+                          stream: _firestore
+                              .collection('Gyms')
+                              .doc(prefs.read('gymuid').toString())
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              var gym = snapshot.data!;
+                              return Text(
+                                '${gym['gymInside']} Kişi',
+                                style: TextStyle(
+                                    fontSize: (Get.height * Get.width) / 15000,
+                                    color: Colors.white),
+                              );
+                            } else {
+                              return Text(
+                                'Hata',
+                                style: TextStyle(
+                                    fontSize: (Get.height * Get.width) / 15000,
+                                    color: Colors.white),
+                              );
+                            }
+                          }),
                     ),
                   ],
                 ),

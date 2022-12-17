@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:gymbuddy/screens/bindings/loginbinding.dart';
-import 'package:gymbuddy/screens/home.dart';
-import 'package:gymbuddy/screens/login.dart';
-import 'package:gymbuddy/screens/opening.dart';
-import 'package:gymbuddy/screens/profile.dart';
+import 'package:gymbuddy/view/bindings/loginbinding.dart';
+import 'package:gymbuddy/view/home.dart';
+import 'package:gymbuddy/view/login.dart';
+import 'package:gymbuddy/view/opening.dart';
+import 'package:gymbuddy/view/profile.dart';
 import 'package:gymbuddy/widgets/LandingPage.dart';
 
 Future main() async {
