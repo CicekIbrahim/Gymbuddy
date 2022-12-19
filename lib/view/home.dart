@@ -231,14 +231,32 @@ class HomePage extends StatelessWidget {
                           Center(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Obx(() => Text(
-                                    '${controller.degree.value}°C',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize:
-                                            (Get.height * Get.width) / 7500,
-                                        color: Colors.white),
-                                  )),
+                              child: StreamBuilder<DocumentSnapshot>(
+                                  stream: _firestore
+                                      .collection('Gyms')
+                                      .doc(prefs.read('gymuid').toString())
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                        '${snapshot.data!['gymDegree']}°C',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize:
+                                                (Get.height * Get.width) / 7500,
+                                            color: Colors.white),
+                                      );
+                                    } else {
+                                      return Text(
+                                        '---°C',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize:
+                                                (Get.height * Get.width) / 7500,
+                                            color: Colors.white),
+                                      );
+                                    }
+                                  }),
                             ),
                           ),
                           const Spacer(),
@@ -272,14 +290,34 @@ class HomePage extends StatelessWidget {
                           Center(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Text(
-                                '%${controller.humid.value}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: (Get.height * Get.width) / 7500,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              child: StreamBuilder<DocumentSnapshot>(
+                                  stream: _firestore
+                                      .collection('Gyms')
+                                      .doc(prefs.read('gymuid').toString())
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                        '%${snapshot.data!['gymHumidity']}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize:
+                                              (Get.height * Get.width) / 7500,
+                                          color: Colors.white,
+                                        ),
+                                      );
+                                    } else {
+                                      return Text(
+                                        '%---',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize:
+                                              (Get.height * Get.width) / 7500,
+                                          color: Colors.white,
+                                        ),
+                                      );
+                                    }
+                                  }),
                             ),
                           ),
                           const Spacer(),
@@ -305,16 +343,23 @@ class HomePage extends StatelessWidget {
                           ),
                           Center(
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Obx(() => Text(
-                                    '${controller.days.value} Gün',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize:
-                                            (Get.height * Get.width) / 8500,
-                                        color: Colors.white),
-                                  )),
-                            ),
+                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                child: GetX<MemberController>(
+                                  init: MemberController(),
+                                  initState: (_) async {
+                                    Get.find<MemberController>().member =
+                                        await Database().getmember();
+                                  },
+                                  builder: (_) {
+                                    return Text(
+                                      '${_.member.memberDays} Gün',
+                                      style: TextStyle(
+                                          fontSize:
+                                              (Get.height * Get.width) / 8500,
+                                          color: Colors.white),
+                                    );
+                                  },
+                                )),
                           ),
                           const Spacer(),
                         ]),
