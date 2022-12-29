@@ -43,6 +43,9 @@ dependencies:
   firebase_auth:
   shared_preferences: ^2.0.15
   get_storage: ^2.0.3
+  image_picker: ^0.8.6
+  cloudinary_public: ^0.20.0
+  cloudinary_sdk: ^4.0.2+10
 
 dev_dependencies:
   flutter_test:

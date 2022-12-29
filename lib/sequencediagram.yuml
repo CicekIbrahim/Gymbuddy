@@ -2,5 +2,9 @@
 // {direction:leftToRight}
 // {generate:true}
 
-(start)->(Salon Seç)->(Giriş Yap)->|b|->(Üyelik SÜresi Görüntüle)->|c|,|b|->(Yoğunluk Görüntüle)->|c|
+(Üye:Giriş yap)->(Üye:Üye bilgilerini görüntüle)->(Üye:Üyelik süresini görüntüle)->(Üye:Salon bilgilerini görüntüle)
+(Kamera:Sıcaklık, nem, yoğunluk verilerini topla)->(Kamera:Verileri veritabanına gönder)
+(Veritabanı:Verileri al)->(Veritabanı:Verileri güncelle)->(Veritabanı:Üye bilgilerine erişim sağla)->(Veritabanı:Üyelik süresini güncelle)
+(Salon:Yoğunluğu hesapla)->(Salon:Yoğunluğu güncelle)
+(Uygulama:Giriş yapılıp yapılmadığını doğrula)->(Uygulama:Görüntülenecek verileri belirle)
 

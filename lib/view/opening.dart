@@ -22,7 +22,7 @@ class OpeningPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference gymsRef = _firestore.collection('Gyms');
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF121212),
       body: Center(
         child: Column(
           children: [
@@ -47,6 +47,7 @@ class OpeningPage extends StatelessWidget {
                             height: Get.height / 11,
                             child: Card(
                                 clipBehavior: Clip.hardEdge,
+                                color: Colors.grey[700],
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(80),
                                 ),

@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF121212),
         extendBody: true,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,9 +341,36 @@ class HomePage extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
+                          GetX<MemberController>(
+                            init: MemberController(),
+                            initState: (_) async {
+                              Get.find<MemberController>().member =
+                                  await Database().getmember();
+                            },
+                            builder: (_) {
+                              if (_.member.memberDays != null) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 15, 10, 0),
+                                  child: LinearProgressIndicator(
+                                    value:
+                                        (_.member.memberDays! / 365).toDouble(),
+                                    color: Colors.amber,
+                                    backgroundColor: Colors.grey,
+                                  ),
+                                );
+                              } else {
+                                return LinearProgressIndicator(
+                                  value: (0 / 365).toDouble(),
+                                  color: Colors.amber,
+                                  backgroundColor: Colors.grey,
+                                );
+                              }
+                            },
+                          ),
                           Center(
                             child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                                 child: GetX<MemberController>(
                                   init: MemberController(),
                                   initState: (_) async {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gymbuddy/controllers/memberController.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../controllers/controller.dart';
 import '../controllers/landingPageController.dart';
@@ -17,7 +18,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF121212),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -51,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                   }),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: GetX<MemberController>(
                 init: MemberController(),
                 initState: (_) async {
@@ -69,11 +70,11 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(8, 6, 8, 25),
               child: Text(
-                controller.getMemberUid(),
+                "ID: " + controller.getMemberUid(),
                 style: TextStyle(
-                    fontSize: (Get.height * Get.width) / 14000,
+                    fontSize: (Get.height * Get.width) / 17000,
                     color: Colors.white60),
               ),
             ),
@@ -84,9 +85,64 @@ class ProfilePage extends StatelessWidget {
                     heroTag: "btn2",
                     backgroundColor: Colors.amber,
                     onPressed: () {
-                      Get.offAndToNamed('/landing');
+                      showDialog(
+                          context: context,
+                          builder: (context) => SizedBox(
+                                child: AlertDialog(
+                                  backgroundColor: Colors.grey[850],
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(25.0))),
+                                  title: const Text(
+                                    'Profil Resmi Seç',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  content: const Text(
+                                    'Yeni Profil Resminiz için Kaynak Seçiniz',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () async {
+                                          controller
+                                              .uploadImage(ImageSource.gallery);
+                                          Navigator.pop(context);
+                                          AlertDialog(
+                                            content: const Text(
+                                              'Profil Resmi Başarıyla Değiştirildi',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Center(
+                                                    child: Text('Kapat')),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Galeri',
+                                          style: TextStyle(color: Colors.amber),
+                                        )),
+                                    TextButton(
+                                        onPressed: () {
+                                          controller
+                                              .uploadImage(ImageSource.camera);
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          'Kamera',
+                                          style: TextStyle(color: Colors.amber),
+                                        ))
+                                  ],
+                                ),
+                              ));
                     },
-                    label: const Text('Profili DÜzenle'))),
+                    label: const Text('Profili Resmini DÜzenle'))),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: DecoratedBox(

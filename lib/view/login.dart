@@ -10,7 +10,7 @@ class LoginPage extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF121212),
       body: Column(
         children: [
           Padding(
@@ -42,12 +42,15 @@ class LoginPage extends GetWidget<AuthController> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.grey[850]),
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                          hintText: "   Email",
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.white60)),
-                      controller: emailController,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                            hintText: "Email",
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(color: Colors.white60)),
+                        controller: emailController,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -57,13 +60,17 @@ class LoginPage extends GetWidget<AuthController> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.grey[850]),
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                          hintText: "   Şifre",
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.white60)),
-                      controller: passwordController,
-                      obscureText: true,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                            hintText: "Şifre",
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(color: Colors.white60)),
+                        controller: passwordController,
+                        obscureText: true,
+                        showCursor: true,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -76,10 +83,8 @@ class LoginPage extends GetWidget<AuthController> {
                           heroTag: "btn1",
                           backgroundColor: Colors.amber,
                           onPressed: () {
-                            
                             controller.login(
                                 emailController.text, passwordController.text);
-                            
                           },
                           label: const Text('Giriş Yap'))),
                 ],
