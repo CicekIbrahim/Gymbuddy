@@ -48,7 +48,11 @@ class Controller extends GetxController {
           filePath: imagePath,
           resourceType: CloudinaryResourceType.image,
           folder: "/Gymbuddy/Members");
-      member.update({'memberUrl': response.url});
+      gymsRef
+          .doc(getGymUid().toString())
+          .collection('Members')
+          .doc(getMemberUid().toString())
+          .update({'memberUrl': response.url});
       return response;
     } else {
       return false;
