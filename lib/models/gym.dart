@@ -9,6 +9,7 @@ class GymModel {
   String? gymUrl;
   int? gymInside;
   String? gymInstagram;
+  String? gymTwitter;
 
   GymModel(
       {this.gymName,
@@ -18,7 +19,8 @@ class GymModel {
       this.gymCapacity,
       this.gymUrl,
       this.gymInside,
-      this.gymInstagram});
+      this.gymInstagram,
+      this.gymTwitter});
 
   factory GymModel.fromDocumentSnapshot(
       {required DocumentSnapshot documentSnapshot}) {
@@ -30,6 +32,7 @@ class GymModel {
         gymCapacity: documentSnapshot["gymCapacity"],
         gymUrl: documentSnapshot["gymUrl"],
         gymInside: documentSnapshot["gymInside"],
-        gymInstagram: documentSnapshot["gymInstagram"]);
+        gymInstagram: documentSnapshot["gymInstagram"],
+        gymTwitter: documentSnapshot["gymTwitter"]);
   }
 }
