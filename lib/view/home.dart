@@ -397,7 +397,7 @@ class HomePage extends StatelessWidget {
                                         'https://res.cloudinary.com/duhzykhah/image/upload/v1672761586/indir_j5wmjv.png'),
                                     onTap: () async {
                                       await canLaunchUrl(Uri.parse(
-                                          snapshot.data!['gymInstagram']));
+                                          snapshot.data!['gymTwitter']));
                                     },
                                   ),
                                 ),
