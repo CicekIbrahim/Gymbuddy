@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gymbuddy/models/gym.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/member.dart';
 
@@ -30,8 +29,6 @@ class Database {
     prefs.write('memberuid', uid);
   }
 
-
-
   Future<MemberModel> getmember() async {
     try {
       final prefs = GetStorage();
@@ -54,11 +51,10 @@ class Database {
     try {
       final prefs = GetStorage();
       final String? gymuid = prefs.read('gymuid');
-      final String? memeruid = prefs.read('uid');
       DocumentSnapshot _doc =
           await _firestore.collection("Gyms").doc(gymuid).get();
 
-      return GymModel.fromDocumentSnapshot(_doc);
+      return GymModel.fromDocumentSnapshot(documentSnapshot: _doc);
     } catch (e) {
       rethrow;
     }

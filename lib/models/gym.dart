@@ -8,6 +8,7 @@ class GymModel {
   int? gymCapacity;
   String? gymUrl;
   int? gymInside;
+  String? gymInstagram;
 
   GymModel(
       {this.gymName,
@@ -16,11 +17,11 @@ class GymModel {
       this.gymDegree,
       this.gymCapacity,
       this.gymUrl,
-      this.gymInside});
+      this.gymInside,
+      this.gymInstagram});
 
   factory GymModel.fromDocumentSnapshot(
-    DocumentSnapshot documentSnapshot,
-  ) {
+      {required DocumentSnapshot documentSnapshot}) {
     return GymModel(
         gymID: documentSnapshot['gymID'],
         gymName: documentSnapshot["gymName"],
@@ -28,7 +29,7 @@ class GymModel {
         gymDegree: documentSnapshot["gymDegree"],
         gymCapacity: documentSnapshot["gymCapacity"],
         gymUrl: documentSnapshot["gymUrl"],
-        gymInside: documentSnapshot["gymInside"]
-        );
+        gymInside: documentSnapshot["gymInside"],
+        gymInstagram: documentSnapshot["gymInstagram"]);
   }
 }

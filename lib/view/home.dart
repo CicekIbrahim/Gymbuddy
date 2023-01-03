@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gymbuddy/controllers/memberController.dart';
 import 'package:gymbuddy/services/database.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controllers/controller.dart';
 import '../controllers/landingPageController.dart';
 
@@ -88,112 +89,70 @@ class HomePage extends StatelessWidget {
                     color: Colors.white),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22, 10, 22, 0),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.grey[850]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 0, 8),
-                      child: Text(
-                        'Doluluk Oranı',
-                        style: TextStyle(
-                            fontSize: (Get.height * Get.width) / 10500,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 4, 0, 5),
-                      child: StreamBuilder<DocumentSnapshot>(
-                          stream: _firestore
-                              .collection('Gyms')
-                              .doc(prefs.read('gymuid').toString())
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              var gym = snapshot.data!;
-                              return Text(
+            StreamBuilder<DocumentSnapshot>(
+                stream: _firestore
+                    .collection('Gyms')
+                    .doc(prefs.read('gymuid').toString())
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  var gym = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(22, 10, 22, 0),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.grey[850]),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 8),
+                            child: Text(
+                              'Doluluk Oranı',
+                              style: TextStyle(
+                                  fontSize: (Get.height * Get.width) / 10500,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 4, 0, 5),
+                              child: Text(
                                 '%${((gym['gymInside'] * 100) / gym['gymCapacity']).toStringAsFixed(1)}',
                                 style: TextStyle(
                                     fontSize: (Get.height * Get.width) / 15000,
                                     color: Colors.white),
-                              );
-                            } else {
-                              return Text("Hata",
-                                  style: TextStyle(
-                                      fontSize:
-                                          (Get.height * Get.width) / 15000,
-                                      color: Colors.white));
-                            }
-                          }),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: StreamBuilder<DocumentSnapshot>(
-                                stream: _firestore
-                                    .collection('Gyms')
-                                    .doc(prefs.read('gymuid').toString())
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    var gym = snapshot.data!;
-                                    return LinearProgressIndicator(
-                                      value: (gym['gymInside'] /
-                                              gym['gymCapacity'])
-                                          .toDouble(),
-                                      color: Colors.amber,
-                                      backgroundColor: Colors.grey,
-                                    );
-                                  } else {
-                                    return LinearProgressIndicator(
-                                      value: (0 / 1).toDouble(),
-                                      color: Colors.amber,
-                                      backgroundColor: Colors.grey,
-                                    );
-                                  }
-                                }),
+                              )),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: LinearProgressIndicator(
+                                    value:
+                                        (gym['gymInside'] / gym['gymCapacity'])
+                                            .toDouble(),
+                                    color: Colors.amber,
+                                    backgroundColor: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 5, 0, 8),
-                      child: StreamBuilder<DocumentSnapshot>(
-                          stream: _firestore
-                              .collection('Gyms')
-                              .doc(prefs.read('gymuid').toString())
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              var gym = snapshot.data!;
-                              return Text(
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 5, 0, 8),
+                              child: Text(
                                 '${gym['gymInside']} Kişi',
                                 style: TextStyle(
                                     fontSize: (Get.height * Get.width) / 15000,
                                     color: Colors.white),
-                              );
-                            } else {
-                              return Text(
-                                'Hata',
-                                style: TextStyle(
-                                    fontSize: (Get.height * Get.width) / 15000,
-                                    color: Colors.white),
-                              );
-                            }
-                          }),
+                              )),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  );
+                }),
             Expanded(
               child: GridView.count(
                 physics: const NeverScrollableScrollPhysics(),
@@ -391,46 +350,64 @@ class HomePage extends StatelessWidget {
                           const Spacer(),
                         ]),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color(0xff7c94b6),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                          image: const AssetImage("lib/Image/male.png")),
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Spacer(),
-                          Center(
-                            child: Text(
-                              'Soyunma Odası Doluluğu',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (Get.height * Get.width) / 14000,
-                                  fontWeight: FontWeight.bold),
+                  StreamBuilder<DocumentSnapshot>(
+                      stream: _firestore
+                          .collection('Gyms')
+                          .doc(prefs.read('gymuid').toString())
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.grey[850]),
+                          padding: const EdgeInsets.all(8),
+                          child: Column(children: [
+                            SizedBox(
+                              height: Get.height / 12,
+                              width: Get.width,
+                              child: Image.network(
+                                  snapshot.data!['gymUrl'].toString()),
                             ),
-                          ),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Obx(() => Text(
-                                    '%${((controller.inside.value * 100) / controller.totalp.value).toStringAsFixed(1)}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize:
-                                            (Get.height * Get.width) / 8500,
-                                        color: Colors.white),
-                                  )),
+                            const Spacer(
+                              flex: 2,
                             ),
-                          ),
-                          const Spacer(),
-                        ]),
-                  ),
+                            Row(
+                              children: [
+                                const Spacer(),
+                                SizedBox(
+                                  height: Get.height / 15,
+                                  width: Get.width / 10,
+                                  child: GestureDetector(
+                                    child: Image.network(
+                                        'https://res.cloudinary.com/duhzykhah/image/upload/v1672761811/360_F_512566120_BAMGElVHqQfK7ggkxbDePJHRN1ZueKQe-removebg-preview_jskvdm.png'),
+                                    onTap: () async {
+                                      await canLaunchUrl(Uri.parse(
+                                          snapshot.data!['gymInstagram']));
+                                    },
+                                  ),
+                                ),
+                                const Spacer(
+                                  flex: 2,
+                                ),
+                                SizedBox(
+                                  height: Get.height / 15,
+                                  width: Get.width / 10,
+                                  child: GestureDetector(
+                                    child: Image.network(
+                                        'https://res.cloudinary.com/duhzykhah/image/upload/v1672761586/indir_j5wmjv.png'),
+                                    onTap: () async {
+                                      await canLaunchUrl(Uri.parse(
+                                          snapshot.data!['gymInstagram']));
+                                    },
+                                  ),
+                                ),
+                                const Spacer(),
+                              ],
+                            ),
+                            const Spacer(),
+                          ]),
+                        );
+                      })
                 ],
               ),
             ),
