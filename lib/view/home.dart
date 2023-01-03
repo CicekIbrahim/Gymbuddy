@@ -381,7 +381,7 @@ class HomePage extends StatelessWidget {
                                     child: Image.network(
                                         'https://res.cloudinary.com/duhzykhah/image/upload/v1672761811/360_F_512566120_BAMGElVHqQfK7ggkxbDePJHRN1ZueKQe-removebg-preview_jskvdm.png'),
                                     onTap: () async {
-                                      await canLaunchUrl(Uri.parse(
+                                      await launchUrl(Uri.parse(
                                           snapshot.data!['gymInstagram']));
                                     },
                                   ),
@@ -396,7 +396,7 @@ class HomePage extends StatelessWidget {
                                     child: Image.network(
                                         'https://res.cloudinary.com/duhzykhah/image/upload/v1672761586/indir_j5wmjv.png'),
                                     onTap: () async {
-                                      await canLaunchUrl(Uri.parse(
+                                      await launchUrl(Uri.parse(
                                           snapshot.data!['gymTwitter']));
                                     },
                                   ),

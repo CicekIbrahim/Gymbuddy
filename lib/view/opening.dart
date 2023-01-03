@@ -26,13 +26,35 @@ class OpeningPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            const Spacer(),
+            const Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                'Hoş Geldiniz',
+                style: TextStyle(
+                    fontSize: 40,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white60,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                'Salonunuzu Seçiniz',
+                style: TextStyle(
+                    fontSize: 40,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white60,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
             StreamBuilder<QuerySnapshot>(
                 stream: gymsRef.snapshots(),
                 builder: (BuildContext context, AsyncSnapshot asyncSnapshot) {
                   if (asyncSnapshot.data != null) {
                     List<DocumentSnapshot> listofDocumentSnapshot =
                         asyncSnapshot.data.docs;
-
                     return ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -62,7 +84,10 @@ class OpeningPage extends StatelessWidget {
                   } else {
                     return const Text('Bir Hata Oluştu');
                   }
-                })
+                }),
+            const Spacer(
+              flex: 6,
+            )
           ],
         ),
       ),
