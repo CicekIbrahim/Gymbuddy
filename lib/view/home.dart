@@ -235,13 +235,13 @@ class HomePage extends StatelessWidget {
                               Icon(
                                 Icons.waves,
                                 color: Colors.amber,
-                                size: (Get.height * Get.width) / 8000,
+                                size: (Get.height * Get.width) / 9100,
                               ),
                               Text(
                                 'Nem Oranı',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: (Get.height * Get.width) / 14000,
+                                    fontSize: (Get.height * Get.width) / 15500,
                                     fontWeight: FontWeight.bold),
                               )
                             ],
