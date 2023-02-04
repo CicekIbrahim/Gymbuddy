@@ -10,6 +10,8 @@ Spor Salonlarının yoğunluk oranını, sıcaklığını ve nem oranını göst
 
 **Kamera ve Sensörler:** Python
 
+**Database:** Firebase 
+
   
 ## Ekran Görüntüleri
 
@@ -21,4 +23,4 @@ Spor Salonlarının yoğunluk oranını, sıcaklığını ve nem oranını göst
 
 IP kameradan alınan live görüntü anlık olarak kullanıcıya sunulmaktadır
 
-![](https://im.ezgif.com/tmp/ezgif-1-7c07c9682d.gif)
+![](https://res.cloudinary.com/duhzykhah/image/upload/v1675508155/Gymbuddy/App%20Screenshots/ezgif.com-gif-maker_d72yfr.gif)
