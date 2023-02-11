@@ -14,6 +14,8 @@ class ProfilePage extends StatelessWidget {
   final prefs = GetStorage();
   final landingcontroller = Get.put(LandingPageController());
   final _firestore = FirebaseFirestore.instance;
+
+  ProfilePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
