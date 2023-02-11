@@ -1,7 +1,8 @@
+
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gymbuddy/view/login.dart';
-
 import '../controllers/landingPageController.dart';
 import '../view/home.dart';
 import '../view/profile.dart';
@@ -14,6 +15,8 @@ class LandingPage extends StatelessWidget {
 
   final TextStyle selectedLabelStyle = const TextStyle(
       color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12);
+
+  LandingPage({Key? key}) : super(key: key);
 
   buildBottomNavigationMenu(
       context, LandingPageController landingPageController) {
