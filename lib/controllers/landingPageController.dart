@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'package:get/get.dart';
 
 class LandingPageController extends GetxController {
@@ -9,7 +7,13 @@ class LandingPageController extends GetxController {
     tabIndex.value = index;
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+  }
 
-
- 
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

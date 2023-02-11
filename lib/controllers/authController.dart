@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:gymbuddy/controllers/memberController.dart';
@@ -21,7 +19,8 @@ class AuthController extends GetxController {
           email: email.trim(), password: password);
       Get.put(MemberController());
       await Database().saveMember(_authResult.user?.uid);
-      Get.find<MemberController>().member = await Database().getmember();
+      Get.find<MemberController>().member =
+          await Database().getmember();
       Get.offAndToNamed('/landing');
     } catch (e) {
       Get.snackbar(

@@ -9,8 +9,6 @@ import '../controllers/landingPageController.dart';
 class OpeningPage extends StatelessWidget {
   final controller = Get.put(Controller());
 
-   OpeningPage({Key? key}) : super(key: key);
-
   _getuid(index, List<DocumentSnapshot> listofDocumentSnapshot) {
     final prefs = GetStorage();
     prefs.write('gymuid', listofDocumentSnapshot[index]['gymID'].toString());

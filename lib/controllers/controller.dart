@@ -40,20 +40,14 @@ class Controller extends GetxController {
   }
 
   uploadImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
+    final pickedFile = await _picker.getImage(source: source);
     if (pickedFile != null) {
       image = File(pickedFile.path);
       imagePath = pickedFile.path;
-      final response = await cloudinary.uploadResource(CloudinaryUploadResource(
-        filePath: imagePath,
-        fileBytes: null,
-        publicId: null,
-        fileName: null,
-        folder: "/Gymbuddy/Members",
-        resourceType: CloudinaryResourceType.image,
-        optParams: null,
-        progressCallback: null,
-      ));
+      final response = await cloudinary.uploadFile(
+          filePath: imagePath,
+          resourceType: CloudinaryResourceType.image,
+          folder: "/Gymbuddy/Members");
       gymsRef
           .doc(getGymUid().toString())
           .collection('Members')
