@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gymbuddy/controllers/memberController.dart';
+import 'package:gymbuddy/controllers/streamController.dart';
 import 'package:gymbuddy/services/database.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controllers/controller.dart';
@@ -16,6 +17,7 @@ class HomePage extends StatelessWidget {
   final landingcontroller = Get.put(LandingPageController());
   String memberuid = Controller().getMemberUid().toString();
   final prefs = GetStorage();
+  final streamController = Get.put(MyStreamController());
 
   HomePage({Key? key}) : super(key: key);
 
@@ -55,8 +57,11 @@ class HomePage extends StatelessWidget {
                     child: SizedBox(
                       height: Get.height / 12,
                       width: Get.width / 6,
-                      child: ClipOval(
-                          child: StreamBuilder<DocumentSnapshot>(
+                      child: ClipOval(child: Obx(() {
+                        if (streamController.isLoading.value) {
+                          return const CircularProgressIndicator();
+                        } else {
+                          return StreamBuilder<DocumentSnapshot>(
                               stream: _firestore
                                   .collection('Gyms')
                                   .doc(prefs.read('gymuid').toString())
@@ -80,7 +85,9 @@ class HomePage extends StatelessWidget {
                                             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png")),
                                   );
                                 }
-                              })),
+                              });
+                        }
+                      })),
                     ))
               ],
             ),
@@ -166,126 +173,9 @@ class HomePage extends StatelessWidget {
                 mainAxisSpacing: 15,
                 crossAxisCount: 2,
                 children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.grey[850]),
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Spacer(),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.thermostat_rounded,
-                                color: Colors.amber,
-                                size: (Get.height * Get.width) / 8000,
-                              ),
-                              Text(
-                                'Sıcaklık',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: (Get.height * Get.width) / 13000,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: StreamBuilder<DocumentSnapshot>(
-                                  stream: _firestore
-                                      .collection('Gyms')
-                                      .doc(prefs.read('gymuid').toString())
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Text(
-                                        '${snapshot.data!['gymDegree']}°C',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize:
-                                                (Get.height * Get.width) / 7500,
-                                            color: Colors.white),
-                                      );
-                                    } else {
-                                      return Text(
-                                        '---°C',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize:
-                                                (Get.height * Get.width) / 7500,
-                                            color: Colors.white),
-                                      );
-                                    }
-                                  }),
-                            ),
-                          ),
-                          const Spacer(),
-                        ]),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.grey[850]),
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Spacer(),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.waves,
-                                color: Colors.amber,
-                                size: (Get.height * Get.width) / 9100,
-                              ),
-                              Text(
-                                'Nem Oranı',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: (Get.height * Get.width) / 15500,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: StreamBuilder<DocumentSnapshot>(
-                                  stream: _firestore
-                                      .collection('Gyms')
-                                      .doc(prefs.read('gymuid').toString())
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Text(
-                                        '%${snapshot.data!['gymHumidity']}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize:
-                                              (Get.height * Get.width) / 7500,
-                                          color: Colors.white,
-                                        ),
-                                      );
-                                    } else {
-                                      return Text(
-                                        '%---',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize:
-                                              (Get.height * Get.width) / 7500,
-                                          color: Colors.white,
-                                        ),
-                                      );
-                                    }
-                                  }),
-                            ),
-                          ),
-                          const Spacer(),
-                        ]),
-                  ),
+                  gridViewWidget(
+                      'Sıcaklık', 'gymDegree', "°C", Icons.thermostat_rounded),
+                  gridViewWidget('Nem Oranı', 'gymHumidity', '%', Icons.waves),
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -417,5 +307,63 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  Container gridViewWidget(
+      String title, String field, String specialChracter, IconData icon) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20), color: Colors.grey[850]),
+      padding: const EdgeInsets.all(8),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Spacer(),
+        Row(
+          children: [
+            Icon(
+              icon,
+              color: Colors.amber,
+              size: (Get.height * Get.width) / 8000,
+            ),
+            Text(
+              title,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: (Get.height * Get.width) / 13000,
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+            child: StreamBuilder<DocumentSnapshot>(
+                stream: _firestore
+                    .collection('Gyms')
+                    .doc(prefs.read('gymuid').toString())
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      '${snapshot.data![field]}$specialChracter',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: (Get.height * Get.width) / 8000,
+                          color: Colors.white),
+                    );
+                  } else {
+                    return Text(
+                      '---$specialChracter',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: (Get.height * Get.width) / 7500,
+                          color: Colors.white),
+                    );
+                  }
+                }),
+          ),
+        ),
+        const Spacer(),
+      ]),
+    );
   }
 }

@@ -36,17 +36,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   animated_bottom_navigation_bar: ^1.1.0
-  dio: ^5.0.0
-  
   firebase_core:
   cloud_firestore:
   firebase_auth:
-  shared_preferences: ^2.0.15
-  get_storage: ^2.0.3
-  image_picker: ^0.8.6
-  cloudinary_public: ^0.20.0
-  cloudinary_sdk: ^4.0.2+10
-  url_launcher: ^6.1.7
+  get_storage: 
+  image_picker: 
+  cloudinary_sdk: 
+  url_launcher: 
 
 dev_dependencies:
   flutter_test:
