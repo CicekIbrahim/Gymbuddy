@@ -12,6 +12,7 @@ Spor Salonlarının yoğunluk oranını, sıcaklığını ve nem oranını göst
 
 **Database:** Firebase 
 
+**Login Info:** FitStop: ibo@gmail.com | ibo1234
   
 ## Ekran Görüntüleri
 
