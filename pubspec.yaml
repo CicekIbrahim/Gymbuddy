@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   animated_bottom_navigation_bar: ^1.1.0
-  
+  dio: ^5.0.0
   
   firebase_core:
   cloud_firestore:
